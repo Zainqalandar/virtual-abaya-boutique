@@ -13,7 +13,7 @@ const HeroSection = () => {
                     objectFit="cover" // Ensures the image covers the container
                     priority // Ensures the image loads faster
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-center text-white px-4">
+                <div className="absolute inset-0 bg-[#080808b7] bg-opacity-50 flex flex-col items-center justify-center text-center text-white px-4">
                     <h1 className="text-4xl md:text-6xl font-bold mb-4">
                         Discover Your Perfect Abaya
                     </h1>
