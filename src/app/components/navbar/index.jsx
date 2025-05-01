@@ -22,17 +22,17 @@ const Navbar = () => {
 					<div className="flex justify-between items-center h-20">
 						{/* Logo */}
 						<div className="flex items-center space-x-3">
-							<Link href="/" className="flex items-center">
-								<Image
-									src="/logo/hijab-girl-logo.png"
-									alt="Logo"
-									width={40}
-									height={40}
-								/>
-								<span className="ml-2 text-2xl font-extrabold text-gray-800 hover:text-gray-900">
-									Abaya Boutique
-								</span>
-							</Link>
+						<Link href="/" className="flex items-center">
+														<Image
+															src="/logo/hijab-girl-logo.png"
+															alt="Logo"
+															width={40}
+															height={40}
+														/>
+														<span className="ml-2 text-2xl font-extrabold text-gray-800 hover:text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
+															Abaya Boutique
+														</span>
+													</Link>
 						</div>
 
 						{/* Desktop Menu */}
