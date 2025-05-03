@@ -1,12 +1,12 @@
 'use client';
 import { useState } from 'react';
-import logo from '/public/logo/hijab-girl-logo.png';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, ShoppingBag, User } from 'lucide-react';
 
 const Navbar = () => {
 	const [open, setOpen] = useState(false);
+	const [userMenuOpen, setUserMenuOpen] = useState(false); // State for user dropdown
 	const navItems = [
 		{ name: 'Home', href: '/' },
 		{ name: 'Dashboard', href: '/dashboard' },
@@ -15,6 +15,46 @@ const Navbar = () => {
 		{ name: 'About', href: '/about' },
 		{ name: 'Contact', href: '/contact' },
 	];
+	function getTokenFromCookies() {
+		const cookies = document.cookie.split(';');
+		for (let cookie of cookies) {
+			const [key, value] = cookie.trim().split('=');
+			if (key === 'token') {
+				return value;
+			}
+		}
+		return null; // Token not found
+	}
+
+	async function logout() {
+		const token = getTokenFromCookies();
+		console.log('Token:', token); // Log the token to check if it's being retrieved correctly
+		if (!token) {
+			console.error('Token not found in cookies');
+			return;
+		}
+	
+		try {
+			const response = await fetch('http://localhost:5225/api/auth/logout', {
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${token}`,
+				}
+			});
+	
+			if (response.ok) {
+				console.log('Logout successful');
+				document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+				window.location.href = '/login';
+			} else {
+				const text = await response.text();
+				console.error('Logout failed:', text); // use text, not json
+			}
+		} catch (error) {
+			console.error('Error during logout:', error);
+		}
+	}
+	
 	return (
 		<>
 			<nav className="bg-white shadow-md sticky top-0 z-50">
@@ -22,17 +62,22 @@ const Navbar = () => {
 					<div className="flex justify-between items-center h-20">
 						{/* Logo */}
 						<div className="flex items-center space-x-3">
-						<Link href="/" className="flex items-center">
-														<Image
-															src="/logo/hijab-girl-logo.png"
-															alt="Logo"
-															width={40}
-															height={40}
-														/>
-														<span className="ml-2 text-2xl font-extrabold text-gray-800 hover:text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
-															Abaya Boutique
-														</span>
-													</Link>
+							<Link href="/" className="flex items-center">
+								<Image
+									src="/logo/hijab-girl-logo.png"
+									alt="Logo"
+									width={40}
+									height={40}
+								/>
+								<span
+									className="ml-2 text-2xl font-extrabold text-gray-800 hover:text-gray-900"
+									style={{
+										fontFamily: "'Playfair Display', serif",
+									}}
+								>
+									Abaya Boutique
+								</span>
+							</Link>
 						</div>
 
 						{/* Desktop Menu */}
@@ -52,12 +97,42 @@ const Navbar = () => {
 							>
 								<ShoppingBag size={22} />
 							</Link>
-							<Link
-								href="/account"
-								className="text-gray-700 hover:text-gray-900 transition"
-							>
-								<User size={22} />
-							</Link>
+
+							{/* User Icon with Dropdown */}
+							<div className="relative">
+								<button
+									onClick={() =>
+										setUserMenuOpen(!userMenuOpen)
+									}
+									className="text-gray-700 hover:text-gray-900 transition"
+								>
+									<User size={22} />
+								</button>
+								{userMenuOpen && (
+									<div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+										<Link
+											href="/settings"
+											className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+											onClick={() =>
+												setUserMenuOpen(false)
+											}
+										>
+											Settings
+										</Link>
+										{/* ...existing code... */}
+										<button
+											className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+											onClick={() => {
+												setUserMenuOpen(false);
+												logout(); // Call the logout function
+											}		}
+										>
+											Logout
+										</button>
+										{/* ...existing code... */}
+									</div>
+								)}
+							</div>
 						</div>
 
 						{/* Mobile Menu Button */}
@@ -93,13 +168,40 @@ const Navbar = () => {
 							>
 								<ShoppingBag size={20} /> <span>Store</span>
 							</Link>
-							<Link
-								href="/account"
-								onClick={() => setOpen(false)}
-								className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition flex items-center space-x-2"
-							>
-								<User size={20} /> <span>Account</span>
-							</Link>
+							<div className="relative">
+								<button
+									onClick={() =>
+										setUserMenuOpen(!userMenuOpen)
+									}
+									className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition flex items-center space-x-2"
+								>
+									<User size={20} /> <span>Account</span>
+								</button>
+								{userMenuOpen && (
+									<div className="mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50">
+										<Link
+											href="/settings"
+											className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+											onClick={() => {
+												setUserMenuOpen(false);
+												setOpen(false);
+											}}
+										>
+											Settings
+										</Link>
+										<button
+											className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+											onClick={() => {
+												setUserMenuOpen(false);
+												setOpen(false);
+												// Add logout logic here
+											}}
+										>
+											Logout
+										</button>
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				)}
