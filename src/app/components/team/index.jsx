@@ -5,18 +5,18 @@ const Team = () => {
 		{
 			name: 'Areeba Khan',
 			role: 'CEO & Founder',
-			photo: '/testimonials/aisha.jpg',
+			photo: '/Featured Collection/classic-black-abaya.jpg',
 		},
 		{ name: 'Sara Ali', role: 'CTO', photo: '/testimonials/fatima.jpg' },
 		{
 			name: 'Nadia Ahmed',
 			role: 'Head of Design',
-			photo: '/testimonials/zara.jpg',
+			photo: '/Featured Collection/classic-black-abaya.jpg',
 		},
 		{
 			name: 'Zainab Qureshi',
 			role: 'Marketing Lead',
-			photo: '/testimonials/aisha.jpg',
+			photo: '/Featured Collection/classic-black-abaya.jpg',
 		},
 	];
 	return (
