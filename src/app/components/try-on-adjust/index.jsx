@@ -50,7 +50,7 @@ export default function TryOnAdjust() {
 
         {/* Static Abaya Overlay */}
         <img
-          src="/Virtual-Try-On/hijab-looks.png"
+          src="/Virtual-Try-On/blue-hijab.png"
           alt="Hijab Overlay"
           className="absolute inset-0 z-20 w-full h-full object-contain pointer-events-none"
         />
